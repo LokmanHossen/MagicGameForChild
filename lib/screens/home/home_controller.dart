@@ -75,6 +75,18 @@ class HomeController extends GetxController {
   }
 
   int getGameProgress(String gameKey) {
-    return user.value?.gameProgress[gameKey] ?? 0;
+    final progress = user.value?.gameProgress[gameKey] ?? 0;
+    // Ensure progress never exceeds 100%
+    return progress > 100 ? 100 : progress;
+  }
+
+  // Get user stars
+  int getUserStars() {
+    return user.value?.stars ?? 0;
+  }
+
+  // Get user level
+  int getUserLevel() {
+    return user.value?.level ?? 1;
   }
 }

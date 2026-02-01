@@ -11,13 +11,15 @@ class UserModel {
     this.stars = 0,
     this.level = 1,
     Map<String, int>? gameProgress,
-  }) : gameProgress = gameProgress ?? {
-    'abc': 0,
-    'numbers': 0,
-    'animals': 0,
-    'colors': 0,
-    'puzzle': 0,
-  };
+  }) : gameProgress = gameProgress ??
+            {
+              'abc': 0,
+              'numbers': 0,
+              'numbers_level': 1, // Store current level for Number Game
+              'animals': 0,
+              'colors': 0,
+              'puzzle': 0,
+            };
 
   // Convert to JSON
   Map<String, dynamic> toJson() {
@@ -50,8 +52,15 @@ class UserModel {
     }
   }
 
-  // Update game progress
+  // Update game progress - ensures progress never exceeds 100%
   void updateGameProgress(String game, int progress) {
-    gameProgress[game] = progress;
+    // Clamp progress between 0 and 100
+    final clampedProgress = progress.clamp(0, 100);
+
+    // Only update if new progress is higher than current
+    final currentProgress = gameProgress[game] ?? 0;
+    if (clampedProgress > currentProgress) {
+      gameProgress[game] = clampedProgress;
+    }
   }
 }

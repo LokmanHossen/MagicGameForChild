@@ -1,5 +1,4 @@
 // import 'dart:async';
-// import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 
 // class NumberGameController extends GetxController {
@@ -12,6 +11,10 @@
 //   final RxList<int> numbers = <int>[].obs;
 //   final RxDouble progress = 0.0.obs;
 //   final RxBool showHint = false.obs;
+
+//   // Animation States
+//   final RxBool showWrongAnimation = false.obs;
+//   final RxBool showCorrectAnimation = false.obs;
 
 //   Timer? _gameTimer;
 //   Timer? _hintTimer;
@@ -27,20 +30,20 @@
 //     // Initialize numbers for the level
 //     numbers.clear();
 //     selectedNumbers.clear();
-//     showHint.value = false; // Reset hint when starting new level
+//     showHint.value = false;
+//     hideWrongAnimation();
+//     hideCorrectAnimation();
 
 //     // Generate random numbers
-//     final count = 4 + (currentLevel.value - 1) * 2; // More numbers per level
+//     final count = 4 + (currentLevel.value - 1) * 2;
 //     final tempNumbers = <int>[];
 //     for (int i = 1; i <= count; i++) {
 //       tempNumbers.add(i);
 //     }
 
-//     // Shuffle numbers
 //     tempNumbers.shuffle();
 //     numbers.assignAll(tempNumbers);
 
-//     // Reset target number
 //     targetNumber.value = 1;
 //     progress.value = 0.0;
 //   }
@@ -53,16 +56,11 @@
 //       if (timeRemaining.value > 0) {
 //         timeRemaining.value--;
 //       } else {
-//         // Time's up!
 //         timer.cancel();
-//         Get.snackbar(
-//           'Time\'s Up! ⏰',
-//           'Level ${currentLevel.value} completed!',
-//           snackPosition: SnackPosition.TOP,
-//           backgroundColor: Colors.orange,
-//           colorText: Colors.white,
-//         );
-//         _levelComplete();
+//         showWrongAnimation.value = true;
+//         Future.delayed(const Duration(seconds: 2), () {
+//           _levelComplete();
+//         });
 //       }
 //     });
 //   }
@@ -70,38 +68,31 @@
 //   void selectNumber(int number) {
 //     if (selectedNumbers.contains(number)) return;
 
-//     // If hint was active and correct number tapped, turn off hint
 //     if (showHint.value && number == targetNumber.value) {
 //       showHint.value = false;
 //     }
 
 //     if (number == targetNumber.value) {
-//       // Correct number in sequence
+//       // Correct number
 //       selectedNumbers.add(number);
 //       targetNumber.value++;
 //       score.value += 10;
 
-//       // Update progress
+//       // Show correct animation
+//       showCorrectAnimation.value = true;
+
 //       progress.value = selectedNumbers.length / numbers.length;
 
-//       // Check if level complete
 //       if (selectedNumbers.length == numbers.length) {
 //         _levelComplete();
 //       }
 //     } else {
-//       // Wrong number - penalty
+//       // Wrong number
 //       score.value -= 5;
 //       if (score.value < 0) score.value = 0;
 
-//       // Show error feedback
-//       Get.snackbar(
-//         'Oops!',
-//         'Wrong number! Tap $targetNumber first',
-//         snackPosition: SnackPosition.TOP,
-//         backgroundColor: Colors.red,
-//         colorText: Colors.white,
-//         duration: const Duration(seconds: 1),
-//       );
+//       // Show wrong animation
+//       showWrongAnimation.value = true;
 //     }
 //   }
 
@@ -113,17 +104,10 @@
 //   void _levelComplete() {
 //     _gameTimer?.cancel();
 //     _hintTimer?.cancel();
-//     score.value += 50; // Bonus for completing level
-//     Get.snackbar(
-//       'Level Complete! 🎉',
-//       'Great job! You earned 50 bonus points!',
-//       snackPosition: SnackPosition.TOP,
-//       backgroundColor: Colors.green,
-//       colorText: Colors.white,
-//       duration: const Duration(seconds: 2),
-//     );
+//     score.value += 50;
 
-//     // Auto-advance after delay
+//     showCorrectAnimation.value = true;
+
 //     Future.delayed(const Duration(seconds: 2), () {
 //       currentLevel.value++;
 //       _startGame();
@@ -135,51 +119,27 @@
 //     if (selectedNumbers.length == numbers.length) {
 //       _levelComplete();
 //     } else {
-//       Get.snackbar(
-//         'Not Finished Yet!',
-//         'Complete all numbers first!',
-//         snackPosition: SnackPosition.TOP,
-//         backgroundColor: Colors.orange,
-//         colorText: Colors.white,
-//       );
+//       showWrongAnimation.value = true;
 //     }
 //   }
 
 //   void provideHint() {
 //     if (score.value >= 20 && !showHint.value) {
-//       score.value -= 20; // Cost for hint
+//       score.value -= 20;
 //       showHint.value = true;
 
-//       // Automatically turn off hint after 10 seconds
 //       _hintTimer?.cancel();
 //       _hintTimer = Timer(const Duration(seconds: 10), () {
 //         showHint.value = false;
 //       });
-
-//       Get.snackbar(
-//         'Hint Activated! 💡',
-//         'Look for the glowing number!',
-//         snackPosition: SnackPosition.TOP,
-//         backgroundColor: Colors.amber,
-//         colorText: Colors.black,
-//       );
 //     } else if (showHint.value) {
-//       // Hint already active
-//       Get.snackbar(
-//         'Hint Already Active',
-//         'Find the glowing number!',
-//         snackPosition: SnackPosition.TOP,
-//         backgroundColor: Colors.amber,
-//         colorText: Colors.black,
-//       );
+//       // Hint already active - show a quick feedback
+//       showCorrectAnimation.value = true;
+//       Future.delayed(const Duration(milliseconds: 800), () {
+//         hideCorrectAnimation();
+//       });
 //     } else {
-//       Get.snackbar(
-//         'Not Enough Points!',
-//         'You need at least 20 points for a hint',
-//         snackPosition: SnackPosition.TOP,
-//         backgroundColor: Colors.red,
-//         colorText: Colors.white,
-//       );
+//       showWrongAnimation.value = true;
 //     }
 //   }
 
@@ -188,9 +148,20 @@
 //     targetNumber.value = 1;
 //     progress.value = 0.0;
 //     showHint.value = false;
+//     hideWrongAnimation();
+//     hideCorrectAnimation();
 //     _hintTimer?.cancel();
 //     _startGame();
 //     _startTimer();
+//   }
+
+//   // Animation control methods
+//   void hideWrongAnimation() {
+//     showWrongAnimation.value = false;
+//   }
+
+//   void hideCorrectAnimation() {
+//     showCorrectAnimation.value = false;
 //   }
 
 //   void quitGame() {
@@ -206,11 +177,15 @@
 //     super.onClose();
 //   }
 // }
-
 import 'dart:async';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:magic_learning_world/services/storage_service.dart';
 
 class NumberGameController extends GetxController {
+  final StorageService _storageService = StorageService();
+
   // Game State
   final RxInt score = 0.obs;
   final RxInt currentLevel = 1.obs;
@@ -225,14 +200,45 @@ class NumberGameController extends GetxController {
   final RxBool showWrongAnimation = false.obs;
   final RxBool showCorrectAnimation = false.obs;
 
+  // Game completion tracking
+  final RxInt totalStarsEarned = 0.obs;
+  final RxInt levelsCompleted = 0.obs;
+
+  // Constants
+  final int maxLevels = 10; // Total levels in the game
+
   Timer? _gameTimer;
   Timer? _hintTimer;
 
   @override
   void onInit() {
     super.onInit();
+    _loadGameState(); // Load saved state
     _startGame();
     _startTimer();
+  }
+
+  void _loadGameState() {
+    final user = _storageService.getUser();
+    if (user != null) {
+      // Load saved level from user model
+      // We need to store level separately in gameProgress
+      final savedLevel = user.gameProgress['numbers_level'] ?? 1;
+
+      // Ensure level doesn't exceed maxLevels
+      if (savedLevel > maxLevels) {
+        currentLevel.value = maxLevels;
+      } else {
+        currentLevel.value = savedLevel;
+      }
+
+      // Calculate how many levels have been completed
+      levelsCompleted.value = currentLevel.value - 1;
+
+      if (kDebugMode) {
+        print('Loaded Number Game: Level ${currentLevel.value}');
+      }
+    }
   }
 
   void _startGame() {
@@ -243,7 +249,7 @@ class NumberGameController extends GetxController {
     hideWrongAnimation();
     hideCorrectAnimation();
 
-    // Generate random numbers
+    // Generate random numbers based on current level
     final count = 4 + (currentLevel.value - 1) * 2;
     final tempNumbers = <int>[];
     for (int i = 1; i <= count; i++) {
@@ -255,6 +261,27 @@ class NumberGameController extends GetxController {
 
     targetNumber.value = 1;
     progress.value = 0.0;
+  }
+
+  void _saveGameState() {
+    final user = _storageService.getUser();
+    if (user != null) {
+      // Save current level to storage
+      user.gameProgress['numbers_level'] = currentLevel.value;
+
+      // Calculate overall progress percentage
+      int overallProgress =
+          ((currentLevel.value - 1) / maxLevels * 100).toInt();
+      user.updateGameProgress('numbers', overallProgress);
+
+      // Save to storage
+      _storageService.updateUser(user);
+
+      if (kDebugMode) {
+        print(
+            'Saved Number Game: Level ${currentLevel.value}, Progress $overallProgress%');
+      }
+    }
   }
 
   void _startTimer() {
@@ -313,14 +340,29 @@ class NumberGameController extends GetxController {
   void _levelComplete() {
     _gameTimer?.cancel();
     _hintTimer?.cancel();
-    score.value += 50;
+
+    // Add bonus stars for completing level
+    int levelBonus = 50;
+    score.value += levelBonus;
+    totalStarsEarned.value = score.value;
+    levelsCompleted.value++;
 
     showCorrectAnimation.value = true;
 
     Future.delayed(const Duration(seconds: 2), () {
-      currentLevel.value++;
-      _startGame();
-      _startTimer();
+      if (currentLevel.value < maxLevels) {
+        // Save current state before advancing
+        _saveGameState();
+
+        // Advance to next level
+        currentLevel.value++;
+
+        // Start next level
+        _startGame();
+        _startTimer();
+      } else {
+        finishGame();
+      }
     });
   }
 
@@ -330,6 +372,33 @@ class NumberGameController extends GetxController {
     } else {
       showWrongAnimation.value = true;
     }
+  }
+
+  void finishGame() {
+    // Save stars and progress to storage
+    final user = _storageService.getUser();
+    if (user != null) {
+      // Add earned stars
+      user.addStars(totalStarsEarned.value);
+
+      // Mark game as completed (100%)
+      user.updateGameProgress('numbers', 100);
+      user.gameProgress['numbers_level'] = maxLevels;
+
+      // Save to storage
+      _storageService.updateUser(user);
+    }
+
+    Get.back();
+
+    Get.snackbar(
+      '🎊 Number Game Complete!',
+      'You earned ${totalStarsEarned.value} stars! All levels completed!',
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: const Color(0xFF4ECDC4),
+      colorText: Colors.white,
+      duration: const Duration(seconds: 3),
+    );
   }
 
   void provideHint() {
@@ -342,7 +411,6 @@ class NumberGameController extends GetxController {
         showHint.value = false;
       });
     } else if (showHint.value) {
-      // Hint already active - show a quick feedback
       showCorrectAnimation.value = true;
       Future.delayed(const Duration(milliseconds: 800), () {
         hideCorrectAnimation();
@@ -374,6 +442,18 @@ class NumberGameController extends GetxController {
   }
 
   void quitGame() {
+    // Save progress when quitting
+    final user = _storageService.getUser();
+    if (user != null) {
+      // Save partial stars
+      user.addStars(score.value);
+
+      // Save current level
+      _saveGameState();
+
+      _storageService.updateUser(user);
+    }
+
     _gameTimer?.cancel();
     _hintTimer?.cancel();
     Get.back();
@@ -381,6 +461,13 @@ class NumberGameController extends GetxController {
 
   @override
   void onClose() {
+    // Save progress when controller closes
+    final user = _storageService.getUser();
+    if (user != null && currentLevel.value > 1) {
+      _saveGameState();
+      _storageService.updateUser(user);
+    }
+
     _gameTimer?.cancel();
     _hintTimer?.cancel();
     super.onClose();

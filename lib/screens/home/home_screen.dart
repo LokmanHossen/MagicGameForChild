@@ -294,6 +294,7 @@ class HomeScreen extends StatelessWidget {
                   Obx(() {
                     final progress =
                         controller.getGameProgress(game['progress']);
+                    final displayProgress = progress > 100 ? 100 : progress;
                     return Row(
                       children: [
                         Expanded(
@@ -305,7 +306,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             child: FractionallySizedBox(
                               alignment: Alignment.centerLeft,
-                              widthFactor: progress / 100,
+                              widthFactor: displayProgress / 100,
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -317,7 +318,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          '$progress%',
+                          '$displayProgress%',
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../services/storage_service.dart';
 
@@ -12,6 +11,10 @@ class AbcGameController extends GetxController {
   final RxInt currentQuestion = 0.obs;
   final RxBool isAnswered = false.obs;
   final RxString selectedAnswer = ''.obs;
+
+  // Animation States
+  final RxBool showCorrectAnimation = false.obs;
+  final RxBool showWrongAnimation = false.obs;
 
   final int totalQuestions = 10;
 
@@ -186,6 +189,8 @@ class AbcGameController extends GetxController {
     options.value = allOptions;
     isAnswered.value = false;
     selectedAnswer.value = '';
+    hideCorrectAnimation();
+    hideWrongAnimation();
   }
 
   void checkAnswer(String emoji) {
@@ -196,27 +201,12 @@ class AbcGameController extends GetxController {
 
     if (emoji == correctAnswer.value) {
       score.value += 10;
-
-      Get.snackbar(
-        '🎉 Correct!',
-        'Great job! +10 stars',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: const Color(0xFF4CAF50),
-        colorText: Colors.white,
-        duration: const Duration(seconds: 1),
-      );
+      showCorrectAnimation.value = true;
     } else {
-      Get.snackbar(
-        '😊 Try Again!',
-        'The correct answer was ${correctAnswer.value}',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: const Color(0xFFFFA07A),
-        colorText: Colors.white,
-        duration: const Duration(seconds: 2),
-      );
+      showWrongAnimation.value = true;
     }
 
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 1), () {
       nextQuestion();
     });
   }
@@ -241,17 +231,37 @@ class AbcGameController extends GetxController {
 
     Get.back();
 
-    Get.snackbar(
-      '🎊 Game Complete!',
-      'You earned ${score.value} stars! Total: ${user?.stars ?? 0} ⭐',
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: const Color(0xFFFF6B9D),
-      colorText: Colors.white,
-      duration: const Duration(seconds: 3),
-    );
+    showCorrectAnimation.value = true;
+    Future.delayed(const Duration(seconds: 1), () {
+      hideCorrectAnimation();
+    });
+  }
+
+  // Animation control methods
+  void hideCorrectAnimation() {
+    showCorrectAnimation.value = false;
+  }
+
+  void hideWrongAnimation() {
+    showWrongAnimation.value = false;
   }
 
   void quitGame() {
+    // Save partial progress if user quits
+    if (currentQuestion.value > 0 || score.value > 0) {
+      final user = _storageService.getUser();
+      if (user != null) {
+        user.addStars(score.value);
+        int partialProgress =
+            ((currentQuestion.value) / totalQuestions * 100).toInt();
+        final currentProgress = user.gameProgress['abc'] ?? 0;
+        if (partialProgress > currentProgress) {
+          user.updateGameProgress('abc', partialProgress);
+        }
+        _storageService.updateUser(user);
+      }
+    }
+
     Get.back();
   }
 }
