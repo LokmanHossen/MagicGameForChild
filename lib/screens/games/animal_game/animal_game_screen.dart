@@ -231,7 +231,7 @@ class AnimalGameScreen extends StatelessWidget {
                     ? 'Which animal makes this sound?'
                     : 'Where does this animal live?',
                 style: const TextStyle(
-                  fontSize: 28,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF2C3E50),
                 ),
@@ -244,8 +244,9 @@ class AnimalGameScreen extends StatelessWidget {
           Obx(() => Column(
                 children: [
                   Container(
-                    width: 200,
-                    height: 200,
+                    // width: 200,
+                    // height: 200,
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         colors: [
@@ -270,7 +271,7 @@ class AnimalGameScreen extends StatelessWidget {
                                 // Speaker emoji
                                 const Text(
                                   '🔊',
-                                  style: TextStyle(fontSize: 70),
+                                  style: TextStyle(fontSize: 60),
                                 ),
                                 const SizedBox(height: 10),
                                 // Sound text

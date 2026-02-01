@@ -15,7 +15,7 @@ class UserModel {
             {
               'abc': 0,
               'numbers': 0,
-              'numbers_level': 1, // Store current level for Number Game
+              'numbers_level': 1,
               'animals': 0,
               'colors': 0,
               'puzzle': 0,
