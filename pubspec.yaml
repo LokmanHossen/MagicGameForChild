@@ -18,6 +18,8 @@ dependencies:
   
   # UI & Icons
   cupertino_icons: ^1.0.6
+  audioplayers: ^6.5.1
+  flutter_tts: ^4.2.5
   
   # Animations (optional)
   # lottie: ^3.0.0
