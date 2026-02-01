@@ -1,0 +1,48 @@
+name: magic_learning_world
+description: A colorful educational game for kids aged 4-8 to learn alphabets, numbers, animals, colors, and shapes.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # State Management
+  get: ^4.6.6
+  
+  # Local Storage
+  get_storage: ^2.1.1
+  
+  # UI & Icons
+  cupertino_icons: ^1.0.6
+  
+  # Animations (optional)
+  # lottie: ^3.0.0
+  
+  # Audio (optional for future)
+  # audioplayers: ^5.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  
+  # To add assets to your application, add an assets section here:
+  # assets:
+  #   - assets/images/
+  #   - assets/sounds/
+  #   - assets/animations/
+  
+  # To add fonts to your application:
+  # fonts:
+  #   - family: ComicNeue
+  #     fonts:
+  #       - asset: fonts/ComicNeue-Regular.ttf
+  #       - asset: fonts/ComicNeue-Bold.ttf
+  #         weight: 700
