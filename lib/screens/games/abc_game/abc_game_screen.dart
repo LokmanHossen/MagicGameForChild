@@ -578,7 +578,7 @@ class AbcGameScreen extends StatelessWidget {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 15,
-                    mainAxisSpacing: 18,
+                    childAspectRatio: 0.70,
                   ),
                   itemCount: controller.options.length,
                   shrinkWrap: true,

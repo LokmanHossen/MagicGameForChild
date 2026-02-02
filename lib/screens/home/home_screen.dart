@@ -25,10 +25,7 @@ class HomeScreen extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              // Header with user info
               _buildHeader(controller),
-
-              // Game areas
               Expanded(
                 child: _buildGameGrid(controller),
               ),
@@ -155,7 +152,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildStatCard(String emoji, String label, String value, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -201,13 +198,15 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildGameGrid(HomeController controller) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+      ),
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          crossAxisSpacing: 15,
+          crossAxisSpacing: 10,
           mainAxisSpacing: 15,
-          childAspectRatio: 0.85,
+          childAspectRatio: 0.80,
         ),
         itemCount: controller.gameAreas.length,
         itemBuilder: (context, index) {
