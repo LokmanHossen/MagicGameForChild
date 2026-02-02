@@ -188,13 +188,13 @@ class ColorGameController extends GetxController {
 
     options.value = allOptions;
 
-    print('Match Question:');
-    print('Current Color: ${colorData['name']}');
-    print(
+    debugPrint('Match Question:');
+    debugPrint('Current Color: ${colorData['name']}');
+    debugPrint(
         'Correct Object: ${correctObject['emoji']} - ${correctObject['name']}');
-    print('Options:');
+    debugPrint('Options:');
     for (var opt in allOptions) {
-      print('  ${opt['emoji']} - ${opt['name']} (${opt['correctColor']})');
+      debugPrint('  ${opt['emoji']} - ${opt['name']} (${opt['correctColor']})');
     }
   }
 
@@ -219,9 +219,9 @@ class ColorGameController extends GetxController {
 
     colorOptions.value = allOptions;
 
-    print('Identify Question:');
-    print('Current Color: ${colorData['name']}');
-    print('Options: $allOptions');
+    debugPrint('Identify Question:');
+    debugPrint('Current Color: ${colorData['name']}');
+    debugPrint('Options: $allOptions');
   }
 
   void generateMixQuestion() {
@@ -256,9 +256,9 @@ class ColorGameController extends GetxController {
 
     mixOptions.value = optionColors;
 
-    print('Mix Question:');
-    print('Target Color: $targetColorName');
-    print(
+    debugPrint('Mix Question:');
+    debugPrint('Target Color: $targetColorName');
+    debugPrint(
         'Correct Mix Colors: ${correctMixColors.map((c) => getColorName(c)).toList()}');
   }
 
@@ -283,28 +283,28 @@ class ColorGameController extends GetxController {
       // Check if the selected object's color matches current color
       isCorrect = selectedOption['correctColor'] == currentColorName;
 
-      print('Match Answer Check:');
-      print(
+      debugPrint('Match Answer Check:');
+      debugPrint(
           '  Selected: ${selectedOption['emoji']} - ${selectedOption['name']}');
-      print('  Selected Color: ${selectedOption['correctColor']}');
-      print('  Current Color: $currentColorName');
-      print('  Is Correct: $isCorrect');
+      debugPrint('  Selected Color: ${selectedOption['correctColor']}');
+      debugPrint('  Current Color: $currentColorName');
+      debugPrint('  Is Correct: $isCorrect');
     } else if (gameMode.value == 'identify') {
       isCorrect = answer == getColorName(currentColor.value);
 
-      print('Identify Answer Check:');
-      print('  Selected: $answer');
-      print('  Current Color: ${getColorName(currentColor.value)}');
-      print('  Is Correct: $isCorrect');
+      debugPrint('Identify Answer Check:');
+      debugPrint('  Selected: $answer');
+      debugPrint('  Current Color: ${getColorName(currentColor.value)}');
+      debugPrint('  Is Correct: $isCorrect');
     }
 
     if (isCorrect) {
       score.value += 10;
       showCorrectAnimation.value = true;
-      print('Correct! Score: ${score.value}');
+      debugPrint('Correct! Score: ${score.value}');
     } else {
       showWrongAnimation.value = true;
-      print('Wrong! Score: ${score.value}');
+      debugPrint('Wrong! Score: ${score.value}');
     }
 
     Future.delayed(const Duration(seconds: 1), () {
@@ -322,7 +322,7 @@ class ColorGameController extends GetxController {
     }
     selectedMixColors.refresh();
 
-    print(
+    debugPrint(
         'Selected Mix Colors: ${selectedMixColors.map((c) => getColorName(c)).toList()}');
   }
 
@@ -333,17 +333,17 @@ class ColorGameController extends GetxController {
 
     // Check if selected colors match the correct mix colors (order doesn't matter)
     final containsAll = selectedMixColors
-        .every((color) => correctMixColors.any((c) => c.value == color.value));
+        .every((color) => correctMixColors.any((c) => c.a == color.a));
 
     if (containsAll && selectedMixColors.length == 2) {
       score.value += 15; // Extra points for mixing!
       showCorrectAnimation.value = true;
-      print('Mix Correct! Score: ${score.value}');
+      debugPrint('Mix Correct! Score: ${score.value}');
     } else {
       showWrongAnimation.value = true;
-      print(
+      debugPrint(
           'Mix Wrong! Selected: ${selectedMixColors.map((c) => getColorName(c)).toList()}');
-      print(
+      debugPrint(
           'Mix Wrong! Expected: ${correctMixColors.map((c) => getColorName(c)).toList()}');
     }
 
@@ -384,7 +384,7 @@ class ColorGameController extends GetxController {
   String getColorName(Color color) {
     try {
       final colorData = colors.firstWhere(
-        (c) => (c['color'] as Color).value == color.value,
+        (c) => (c['color'] as Color).a == color.a,
       );
       return colorData['name'] as String;
     } catch (e) {
