@@ -236,16 +236,15 @@ class ColorGameScreen extends StatelessWidget {
           const Text(
             'Find objects of this color!',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 24,
               fontWeight: FontWeight.bold,
               color: Color(0xFF2C3E50),
             ),
             textAlign: TextAlign.center,
           ),
 
-          const SizedBox(height: 30),
+          const SizedBox(height: 10),
 
-          // Current Color
           Obx(() => Column(
                 children: [
                   Container(
@@ -271,7 +270,7 @@ class ColorGameScreen extends StatelessWidget {
                       child: Text(
                         controller.getColorName(controller.currentColor.value),
                         style: const TextStyle(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                           shadows: [
@@ -284,7 +283,7 @@ class ColorGameScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 16),
                   const Text(
                     'Which object is this color?',
                     style: TextStyle(
@@ -296,7 +295,7 @@ class ColorGameScreen extends StatelessWidget {
                 ],
               )),
 
-          const SizedBox(height: 30),
+          const SizedBox(height: 16),
 
           // Options
           Expanded(
@@ -305,7 +304,7 @@ class ColorGameScreen extends StatelessWidget {
                     crossAxisCount: 2,
                     crossAxisSpacing: 15,
                     mainAxisSpacing: 15,
-                    childAspectRatio: 1.3,
+                    childAspectRatio: 1.1,
                   ),
                   itemCount: controller.options.length,
                   shrinkWrap: true,
@@ -415,7 +414,7 @@ class ColorGameScreen extends StatelessWidget {
           const Text(
             'What color is this?',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 24,
               fontWeight: FontWeight.bold,
               color: Color(0xFF2C3E50),
             ),
@@ -428,8 +427,8 @@ class ColorGameScreen extends StatelessWidget {
           Obx(() => Column(
                 children: [
                   Container(
-                    width: 200,
-                    height: 200,
+                    width: 150,
+                    height: 150,
                     decoration: BoxDecoration(
                       color: controller.currentColor.value,
                       borderRadius: BorderRadius.circular(25),
@@ -533,12 +532,9 @@ class ColorGameScreen extends StatelessWidget {
     );
   }
 
-  // Mix Game: Color mixing
-
-  // Mix Game: Color mixing
   Widget _buildMixGame(ColorGameController controller) {
     return Container(
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(30),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -557,14 +553,14 @@ class ColorGameScreen extends StatelessWidget {
           const Text(
             'Color Mixing Magic!',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 26,
               fontWeight: FontWeight.bold,
               color: Color(0xFF2C3E50),
             ),
             textAlign: TextAlign.center,
           ),
 
-          const SizedBox(height: 30),
+          const SizedBox(height: 16),
 
           // Color Mixing Display
           Obx(() => Column(
@@ -574,8 +570,8 @@ class ColorGameScreen extends StatelessWidget {
                     children: [
                       // First color
                       Container(
-                        width: 80,
-                        height: 80,
+                        width: 70,
+                        height: 70,
                         decoration: BoxDecoration(
                           color: controller.mixColors[0],
                           shape: BoxShape.circle,
@@ -591,25 +587,22 @@ class ColorGameScreen extends StatelessWidget {
                       ),
                       // Second color
                       Container(
-                        width: 80,
-                        height: 80,
+                        width: 70,
+                        height: 70,
                         decoration: BoxDecoration(
                           color: controller.mixColors[1],
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 3),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Icon(
-                          Icons.arrow_forward,
-                          size: 40,
-                        ),
+                      const Icon(
+                        Icons.arrow_forward,
+                        size: 40,
                       ),
                       // Result color
                       Container(
-                        width: 80,
-                        height: 80,
+                        width: 70,
+                        height: 70,
                         decoration: BoxDecoration(
                           color: controller.currentColor.value,
                           shape: BoxShape.circle,

@@ -231,21 +231,18 @@ class AnimalGameScreen extends StatelessWidget {
                     ? 'Which animal makes this sound?'
                     : 'Where does this animal live?',
                 style: const TextStyle(
-                  fontSize: 24,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF2C3E50),
                 ),
                 textAlign: TextAlign.center,
               )),
 
-          const SizedBox(height: 30),
+          const SizedBox(height: 10),
 
-          // Current Animal or Question
           Obx(() => Column(
                 children: [
                   Container(
-                    // width: 200,
-                    // height: 200,
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
@@ -254,7 +251,7 @@ class AnimalGameScreen extends StatelessWidget {
                           Color(0xFF4ECDC4),
                         ],
                       ),
-                      borderRadius: BorderRadius.circular(25),
+                      borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
                           color: const Color(0xFF4ECDC4).withValues(alpha: 0.3),
@@ -271,14 +268,14 @@ class AnimalGameScreen extends StatelessWidget {
                                 // Speaker emoji
                                 const Text(
                                   '🔊',
-                                  style: TextStyle(fontSize: 60),
+                                  style: TextStyle(fontSize: 40),
                                 ),
-                                const SizedBox(height: 10),
+                                // const SizedBox(height: 10),
                                 // Sound text
                                 Text(
                                   controller.currentQuestionSound.value,
                                   style: const TextStyle(
-                                    fontSize: 28,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
                                   ),
@@ -293,18 +290,17 @@ class AnimalGameScreen extends StatelessWidget {
                                 Text(
                                   controller.currentAnimal.value,
                                   style: const TextStyle(
-                                    fontSize: 80,
+                                    fontSize: 60,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
                                   ),
                                 ),
-                                const SizedBox(height: 10),
                                 Text(
                                   controller.animalData[controller
                                           .currentAnimal.value]?['name'] ??
                                       '',
                                   style: const TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 20,
                                     color: Colors.white,
                                   ),
                                 ),
@@ -312,18 +308,14 @@ class AnimalGameScreen extends StatelessWidget {
                             ),
                           ),
                   ),
-
-                  // Sound play button (only for sound mode)
                   if (controller.gameMode.value == 'sound') ...[
-                    const SizedBox(height: 20),
-
-                    // Sound play button
+                    const SizedBox(height: 10),
                     Obx(() => GestureDetector(
                           onTap: controller.playAnimalSound,
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 25,
-                              vertical: 12,
+                              horizontal: 20,
+                              vertical: 8,
                             ),
                             decoration: BoxDecoration(
                               color: controller.isPlayingSound.value
@@ -346,7 +338,7 @@ class AnimalGameScreen extends StatelessWidget {
                                       ? Icons.pause
                                       : Icons.play_arrow,
                                   color: Colors.white,
-                                  size: 28,
+                                  size: 20,
                                 ),
                                 const SizedBox(width: 10),
                                 Text(
@@ -364,10 +356,7 @@ class AnimalGameScreen extends StatelessWidget {
                           ),
                         )),
                   ],
-
-                  const SizedBox(height: 20),
-
-                  // Instruction text
+                  const SizedBox(height: 10),
                   Text(
                     controller.gameMode.value == 'sound'
                         ? 'Tap the button to hear the sound!'
@@ -381,7 +370,7 @@ class AnimalGameScreen extends StatelessWidget {
                 ],
               )),
 
-          const SizedBox(height: 30),
+          const SizedBox(height: 10),
 
           // Options
           Expanded(
