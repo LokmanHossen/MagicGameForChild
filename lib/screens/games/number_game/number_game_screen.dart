@@ -51,7 +51,6 @@ class NumberGameScreen extends StatelessWidget {
             SafeArea(
               child: Column(
                 children: [
-                  // Game Stats
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Obx(() => Row(
@@ -78,12 +77,9 @@ class NumberGameScreen extends StatelessWidget {
                           ],
                         )),
                   ),
-
-                  // Hill Background with Numbers
                   Expanded(
                     child: Stack(
                       children: [
-                        // Hills Background
                         Positioned(
                           bottom: 0,
                           left: 0,
@@ -109,8 +105,6 @@ class NumberGameScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-
-                        // Game Content
                         Column(
                           children: [
                             const SizedBox(height: 20),
@@ -129,7 +123,6 @@ class NumberGameScreen extends StatelessWidget {
                                   ),
                                 )),
                             const SizedBox(height: 10),
-                            // Number Grid
                             Expanded(
                               child: Obx(() => GridView.builder(
                                     padding: const EdgeInsets.all(20),
@@ -173,8 +166,10 @@ class NumberGameScreen extends StatelessWidget {
                                               borderRadius:
                                                   BorderRadius.circular(15),
                                               border: Border.all(
-                                                color: Colors.blue.shade800,
-                                                width: 2,
+                                                color: isHintNumber
+                                                    ? Colors.orange
+                                                    : Colors.blue.shade800,
+                                                width: isHintNumber ? 4 : 2,
                                               ),
                                               boxShadow: [
                                                 BoxShadow(
@@ -241,10 +236,8 @@ class NumberGameScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-
-                        // Progress Indicator
                         Positioned(
-                          bottom: 100,
+                          bottom: 50,
                           left: 20,
                           right: 20,
                           child: Obx(() => LinearProgressIndicator(
@@ -252,7 +245,7 @@ class NumberGameScreen extends StatelessWidget {
                                 backgroundColor:
                                     Colors.white.withValues(alpha: 0.3),
                                 valueColor: const AlwaysStoppedAnimation<Color>(
-                                    Colors.green),
+                                    Colors.amber),
                                 minHeight: 15,
                                 borderRadius: BorderRadius.circular(10),
                               )),
@@ -260,14 +253,11 @@ class NumberGameScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-
-                  // Control Buttons
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        // Reset Button
                         ElevatedButton.icon(
                           onPressed: controller.resetGame,
                           style: ElevatedButton.styleFrom(
@@ -348,7 +338,6 @@ class NumberGameScreen extends StatelessWidget {
               ),
             ),
 
-            // Wrong Emoji Animation
             Obx(() => controller.showWrongAnimation.value
                 ? Positioned.fill(
                     child: Center(
@@ -480,7 +469,6 @@ class NumberGameScreen extends StatelessWidget {
   }
 }
 
-// Custom painter for hills
 class _HillPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -488,7 +476,6 @@ class _HillPainter extends CustomPainter {
       ..color = Colors.green.shade700
       ..style = PaintingStyle.fill;
 
-    // Draw hills
     final path = Path();
     path.moveTo(0, size.height);
     path.quadraticBezierTo(
@@ -501,7 +488,6 @@ class _HillPainter extends CustomPainter {
 
     canvas.drawPath(path, paint);
 
-    // Draw sun
     final sunPaint = Paint()
       ..color = Colors.yellow
       ..style = PaintingStyle.fill;
